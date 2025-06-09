@@ -30,13 +30,13 @@ public class HomeController extends HttpServlet {
         String action = request.getParameter("action");
         BookDAO bookDAO = new BookDAO();
         
-        if (action.equals("viewuserhomepage")) {
+        if (action == null || action.equals("viewuserhomepage")) {
             ArrayList<BookDTO> bookList = null;
             bookList = bookDAO.listBook();
             
             request.setAttribute("booklist", bookList);
             
-            request.getRequestDispatcher("user_pages/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("search")) {
             String seacrhValue = request.getParameter("searchvalue").toLowerCase();
             ArrayList<BookDTO> bookList = null;
@@ -44,7 +44,7 @@ public class HomeController extends HttpServlet {
             
             request.setAttribute("booklist", bookList);
             
-            request.getRequestDispatcher("user_pages/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("savetoborrowlist")) {
             HttpSession session = request.getSession(false);
             boolean bookExist = false;

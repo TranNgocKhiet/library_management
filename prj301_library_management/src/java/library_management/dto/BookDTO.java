@@ -9,6 +9,7 @@ package library_management.dto;
  * @author Slayer
  */
 public class BookDTO {
+
     int id;
     private String title;
     private String author;
@@ -18,6 +19,15 @@ public class BookDTO {
     private int totalCopies;
     private int availableCopies;
     private String status;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public int getId() {
         return id;

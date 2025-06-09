@@ -23,7 +23,7 @@ public class BookDAO {
         
         try {
             con = DBUtils.getConnection();
-            String sql = "SELECT id, title, author, isbn, category, published_year, total_copies, available_copies, status FROM books ORDER BY id ASC";
+            String sql = "SELECT id, title, author, isbn, category, published_year, total_copies, available_copies,image, status FROM books ORDER BY id ASC";
             
             BookDTO book = null;
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -41,7 +41,7 @@ public class BookDAO {
                     book.setTotalCopies(rs.getInt("total_copies"));
                     book.setAvailableCopies(rs.getInt("available_copies"));
                     book.setStatus(rs.getString("status"));
-                    
+                    book.setImage(rs.getString("image"));
                     list.add(book);
                 }
             }
@@ -64,7 +64,7 @@ public class BookDAO {
         
         try {
             con = DBUtils.getConnection();
-            String sql = "SELECT id, title, author, isbn, category, published_year, total_copies, available_copies, status FROM books"
+            String sql = "SELECT id, title, author, isbn, category, published_year, total_copies, available_copies,image, status FROM books"
                     + " WHERE title LIKE ? OR author LIKE ? OR category LIKE ? ORDER BY id ASC";
             
             BookDTO book = null;
@@ -86,7 +86,7 @@ public class BookDAO {
                     book.setTotalCopies(rs.getInt("total_copies"));
                     book.setAvailableCopies(rs.getInt("available_copies"));
                     book.setStatus(rs.getString("status"));
-                    
+                    book.setImage(rs.getString("image"));
                     list.add(book);
                 }
             }

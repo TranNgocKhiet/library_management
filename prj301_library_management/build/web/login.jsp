@@ -20,7 +20,7 @@
         <h1>Login</h1>
         <form action="./LoginController" method="GET">
             <input type="text" name="name" value="<%=request.getParameter("name") != null ? request.getParameter("name") : ""%>">
-            <input type="password" name="password" value="<%=request.getParameter("password") != null ? request.getParameter("pasword") : ""%>">
+            <input type="password" name="password" value="<%=request.getParameter("password") != null ? request.getParameter("password") : ""%>">
             <input type="hidden" name="action" value="login">
             <input type="submit" value="Log in">
         </form>

@@ -48,7 +48,7 @@ public class AdminHomeController extends HttpServlet {
             
             request.setAttribute("booklist", bookList);
             
-            request.getRequestDispatcher("admin_pages/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("search")) {
             String seacrhValue = request.getParameter("searchvalue").toLowerCase();
             ArrayList<BookDTO> bookList = null;
@@ -56,7 +56,7 @@ public class AdminHomeController extends HttpServlet {
             
             request.setAttribute("booklist", bookList);
             
-            request.getRequestDispatcher("admin_pages/home.jsp").forward(request, response);
+            request.getRequestDispatcher("/home.jsp").forward(request, response);
         } 
     }
 
