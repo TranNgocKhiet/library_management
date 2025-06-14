@@ -77,7 +77,7 @@
         %>
         <br>
         <form action="UserController" name='search' method="POST" class="search-bar">
-            <input type="text" name="searchvalue" value="<%=request.getParameter("searchvalue") != null ? request.getParameter("searchvalue") : ""%>">
+            <input type="text" name="searchvalue" value="${param.serchvalue}">
             <input type="hidden"  name="action" value="search">
             <input type="submit" value="Search">
         </form>
@@ -99,6 +99,11 @@
                     <p><strong>Năm xuất bản:</strong> <%= book.getPublishedYear()%></p>
                     <p><strong>Số lượng trong thư viện:</strong> <%= book.getAvailableCopies()%>/<%= book.getTotalCopies()%></p>
                     <p><strong>Trạng thái:</strong> <%= book.getStatus()%></p>
+                    <form action="UserController" method="POST">
+                        <input type="hidden" name="borrowid" value="<%= book.getId()%>">
+                        <input type="hidden" name="action" value="savetoborrowlist">
+                        <input type="submit" value="Save To Shelf">
+                    </form>
                 </div>
             </div>
             <%
