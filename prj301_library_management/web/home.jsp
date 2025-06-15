@@ -76,9 +76,8 @@
             }
         %>
         <br>
-        <form action="UserController" name='search' method="POST" class="search-bar">
-            <input type="text" name="searchvalue" value="${param.serchvalue}">
-            <input type="hidden"  name="action" value="search">
+        <form action="SearchController" name='search' method="POST" class="search-bar">
+            <input type="text" name="searchvalue" value="${param.searchvalue}">
             <input type="submit" value="Search">
         </form>
 
@@ -87,6 +86,9 @@
                 ArrayList<BookDTO> bookList = (ArrayList<BookDTO>) request.getAttribute("booklist");
                 if (bookList != null) {
                     for (BookDTO book : bookList) {
+                    if(book.getStatus().equals("deleted")){
+                    continue;
+                }
             %>
             <div class="book-card">
                 <img src="images/<%= book.getImage()%>" alt="book image"/>
@@ -98,12 +100,13 @@
                     <p><strong>Thể loại:</strong> <%= book.getCategory()%></p>
                     <p><strong>Năm xuất bản:</strong> <%= book.getPublishedYear()%></p>
                     <p><strong>Số lượng trong thư viện:</strong> <%= book.getAvailableCopies()%>/<%= book.getTotalCopies()%></p>
-                    <p><strong>Trạng thái:</strong> <%= book.getStatus()%></p>
+                    <%if(role == null || !role.equals("admin")) {%>
                     <form action="UserController" method="POST">
                         <input type="hidden" name="borrowid" value="<%= book.getId()%>">
                         <input type="hidden" name="action" value="savetoborrowlist">
                         <input type="submit" value="Save To Shelf">
                     </form>
+                        <%}%>
                 </div>
             </div>
             <%

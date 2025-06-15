@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import library_management.utils.DBUtils;
 
@@ -16,15 +17,16 @@ import library_management.utils.DBUtils;
  *
  * @author Slayer
  */
-    public class BookRequestDAO {
-        public ArrayList<BookRequestDTO> getBookRequestsByUserId(int userId) throws SQLException, ClassNotFoundException {
+public class BookRequestDAO {
+
+    public ArrayList<BookRequestDTO> getBookRequestsByUserId(int userId) throws SQLException, ClassNotFoundException {
         Connection con = null;
         ArrayList<BookRequestDTO> requests = new ArrayList<>();
 
         try {
             con = DBUtils.getConnection();
             String sql = "SELECT r.id, user_id, book_id, b.title, request_date, r.status FROM book_requests r LEFT JOIN books b ON r.book_id = b.id WHERE user_id = ? ORDER BY id ASC";
-            
+
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -43,8 +45,41 @@ import library_management.utils.DBUtils;
             e.printStackTrace();
         } finally {
             try {
-                if (con != null)
+                if (con != null) {
                     con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return requests;
+    }
+
+    public ArrayList<BookRequestDTO> getAllBookRequests() throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        ArrayList<BookRequestDTO> requests = new ArrayList<>();
+
+        try {
+            con = DBUtils.getConnection();
+            String sql = "SELECT id, user_id, book_id, request_date, status FROM book_requests";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                BookRequestDTO request = new BookRequestDTO();
+                request.setId(rs.getInt("id"));
+                request.setUserId(rs.getInt("user_id"));
+                request.setBookId(rs.getInt("book_id"));
+                request.setRequestDate(rs.getDate("request_date"));
+                request.setStatus(rs.getString("status"));
+                requests.add(request);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,18 +101,20 @@ import library_management.utils.DBUtils;
             stmt.setDate(3, request.getRequestDate());
             stmt.setString(4, request.getStatus());
             int rows = stmt.executeUpdate();
-            
+
             success = rows > 0;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                if (con != null)
+                if (con != null) {
                     con.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return success;
     }
+
 }

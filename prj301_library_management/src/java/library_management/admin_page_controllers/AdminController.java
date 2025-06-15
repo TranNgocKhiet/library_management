@@ -30,14 +30,14 @@ public class AdminController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String url = "login.jsp"; 
+        String url = "login.jsp";
         String action = request.getParameter("action");
-        
+
         try {
             if (action != null) {
-                action = action.toLowerCase(); 
+                action = action.toLowerCase();
             } else {
-                action = ""; 
+                action = "";
             }
             switch (action) {
                 case "login":
@@ -48,6 +48,12 @@ public class AdminController extends HttpServlet {
                     break;
                 case "search":
                     url = "AdminHomeController";
+                    break;
+                case "editbook":
+                    url = "EditBookController";
+                    break;
+                case "processrequest":
+                    url = "ProcessRequestController";
                     break;
                 default:
                     break;

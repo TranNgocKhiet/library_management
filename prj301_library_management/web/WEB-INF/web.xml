@@ -52,6 +52,18 @@
         <servlet-name>SignoutController</servlet-name>
         <servlet-class>library_management.controllers.SignoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditBookController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.EditBookController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>library_management.controllers.SearchController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessRequestController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.ProcessRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
@@ -135,6 +147,18 @@
     <servlet-mapping>
         <servlet-name>SignoutController</servlet-name>
         <url-pattern>/SignoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditBookController</servlet-name>
+        <url-pattern>/EditBookController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessRequestController</servlet-name>
+        <url-pattern>/ProcessRequestController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

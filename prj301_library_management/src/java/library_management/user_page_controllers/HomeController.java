@@ -23,34 +23,38 @@ import library_management.dto.BookDTO;
  * @author Slayer
  */
 public class HomeController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("action");
         BookDAO bookDAO = new BookDAO();
-        
+        ArrayList<BookDTO> bookList = null;
+        bookList = bookDAO.listBook();
+        request.setAttribute("booklist", bookList);
         if (action == null || action.equals("viewuserhomepage")) {
-            ArrayList<BookDTO> bookList = null;
-            bookList = bookDAO.listBook();
-            
-            request.setAttribute("booklist", bookList);
-            
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("search")) {
             String seacrhValue = request.getParameter("searchvalue").toLowerCase();
-            ArrayList<BookDTO> bookList = null;
             bookList = bookDAO.listBook(seacrhValue);
-            
             request.setAttribute("booklist", bookList);
-            
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("savetoborrowlist")) {
             HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("user") == null) {
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+
             boolean bookExist = false;
             int borrowId = Integer.parseInt(request.getParameter("borrowid"));
             ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");
-            
+
+            if (borrowList == null) {
+                borrowList = new ArrayList<>();
+                session.setAttribute("borrowlist", borrowList);
+            }
 
             for (BookDTO book : borrowList) {
                 if (book.getId() == borrowId) {
@@ -58,11 +62,12 @@ public class HomeController extends HttpServlet {
                     break;
                 }
             }
+
             if (!bookExist) {
                 borrowList.add(bookDAO.getBookById(borrowId));
-            }   
-            
-            session.setAttribute("borrowlist", borrowList);
+            }
+
+            // Sau khi thêm, forward về trang chủ
             request.getRequestDispatcher("UserController?action=viewuserhomepage").forward(request, response);
         }
     }

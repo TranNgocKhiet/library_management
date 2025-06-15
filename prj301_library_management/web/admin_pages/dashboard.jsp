@@ -47,8 +47,12 @@
         <form action="AdminController?action=viewadminrhomepage" method="POST">                  
             <input type="submit" value="Home">
         </form>
-        
-        
+        <form action="AdminController?action=editBook" method="POST">                  
+            <input type="submit" value="Edit Books">
+        </form>
+         <form action="AdminController?action=processrequest" method="POST">                  
+            <input type="submit" value="Process Requests">
+        </form>
         <form action="UserController?action=logout" method="POST" class='signout-btn'>                  
             <input type="submit" value="Sign out">
         </form>
