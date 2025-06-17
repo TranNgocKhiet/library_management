@@ -11,12 +11,22 @@ package library_management.dto;
 import java.sql.Date;
 
 public class BookRequestDTO {
+
     private int id;
     private int userId;
     private int bookId;
     private String title;
     private Date requestDate;
     private String status;
+    private String requestType;
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
 
     public int getId() {
         return id;
@@ -66,4 +76,3 @@ public class BookRequestDTO {
         this.status = status;
     }
 }
-

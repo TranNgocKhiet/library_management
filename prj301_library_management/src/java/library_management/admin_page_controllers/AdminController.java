@@ -55,6 +55,15 @@ public class AdminController extends HttpServlet {
                 case "processrequest":
                     url = "ProcessRequestController";
                     break;
+                case "manageaccount":
+                    url = "ManageAccountController";
+                    break;
+                case "viewbookoverdue":
+                    url = "OverdueBookViewController";
+                    break;
+                case "viewstatistics":
+                    url = "StatisticsPageController";
+                    break;
                 default:
                     break;
             }

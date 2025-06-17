@@ -77,6 +77,7 @@
         %>
         <br>
         <form action="SearchController" name='search' method="POST" class="search-bar">
+            <input type="hidden" name="action" value="homeBookSearch">
             <input type="text" name="searchvalue" value="${param.searchvalue}">
             <input type="submit" value="Search">
         </form>

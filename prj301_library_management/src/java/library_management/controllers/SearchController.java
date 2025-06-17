@@ -12,7 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import library_management.dao.BookDAO;
+import library_management.dao.UserDAO;
 import library_management.dto.BookDTO;
+import library_management.dto.UserDTO;
 
 /**
  *
@@ -41,8 +43,13 @@ public class SearchController extends HttpServlet {
             request.setAttribute("booklist", bookList);
             if ("editBoookSearch".equals(action)) {
                 request.getRequestDispatcher("/admin_pages/EditBookForm.jsp").forward(request, response);
-            } else {
+            } else if ("homeBookSearch".equals(action)) {
                 request.getRequestDispatcher("/home.jsp").forward(request, response);
+            } else if ("adminAccountSearch".equals(action)) {
+                UserDAO usDAO = new UserDAO();
+                ArrayList<UserDTO> usList = usDAO.getUserByEmail(seacrhValue);
+                request.setAttribute("usList", usList);
+                request.getRequestDispatcher("/admin_pages/ManageAccountController.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();

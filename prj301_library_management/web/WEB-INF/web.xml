@@ -64,6 +64,18 @@
         <servlet-name>ProcessRequestController</servlet-name>
         <servlet-class>library_management.admin_page_controllers.ProcessRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageAccountController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.ManageAccountController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OverdueBookViewController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.OverdueBookViewController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatisticsPageController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.StatisticsPageController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
@@ -159,6 +171,18 @@
     <servlet-mapping>
         <servlet-name>ProcessRequestController</servlet-name>
         <url-pattern>/ProcessRequestController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageAccountController</servlet-name>
+        <url-pattern>/ManageAccountController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OverdueBookViewController</servlet-name>
+        <url-pattern>/OverdueBookViewController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticsPageController</servlet-name>
+        <url-pattern>/StatisticsPageController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

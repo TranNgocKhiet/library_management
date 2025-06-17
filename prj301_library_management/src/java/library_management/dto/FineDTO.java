@@ -14,6 +14,15 @@ public class FineDTO {
     private double fineAmount;
     private String paidStatus;
 
+    public FineDTO(int borrowId, double fineAmount, String paidStatus) {
+        this.borrowId = borrowId;
+        this.fineAmount = fineAmount;
+        this.paidStatus = paidStatus;
+    }
+
+    public FineDTO() {
+    }
+
     public int getId() {
         return id;
     }

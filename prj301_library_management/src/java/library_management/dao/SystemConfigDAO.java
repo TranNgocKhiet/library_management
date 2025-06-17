@@ -46,7 +46,29 @@ public class SystemConfigDAO {
         }
         return configs;
     }
-    
+    public String getConfigValueByKey(String configKey) throws SQLException, ClassNotFoundException {
+        String configvalue = "";
+        Connection con = null;
+
+        try {
+            con = DBUtils.getConnection();
+            String sql = "SELECT config_value FROM system_config where config_key = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, configKey);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                configvalue = rs.getString("config_value");
+            }
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return configvalue;
+    }
     public boolean updateConfigValue(String key, String newValue) throws SQLException, ClassNotFoundException {
         Connection con = null;
         boolean updated = false;

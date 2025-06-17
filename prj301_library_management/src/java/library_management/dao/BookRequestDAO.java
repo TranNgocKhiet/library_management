@@ -61,7 +61,7 @@ public class BookRequestDAO {
 
         try {
             con = DBUtils.getConnection();
-            String sql = "SELECT id, user_id, book_id, request_date, status FROM book_requests";
+            String sql = "SELECT id, user_id, book_id, request_date, status, request_type FROM book_requests";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -71,6 +71,7 @@ public class BookRequestDAO {
                 request.setBookId(rs.getInt("book_id"));
                 request.setRequestDate(rs.getDate("request_date"));
                 request.setStatus(rs.getString("status"));
+                request.setRequestType(rs.getString("request_type"));
                 requests.add(request);
             }
         } catch (Exception e) {
@@ -100,6 +101,36 @@ public class BookRequestDAO {
             stmt.setInt(2, request.getBookId());
             stmt.setDate(3, request.getRequestDate());
             stmt.setString(4, request.getStatus());
+            int rows = stmt.executeUpdate();
+
+            success = rows > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+
+    public boolean setRequestStatusById(int id, String status) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        boolean success = false;
+
+        try {
+            con = DBUtils.getConnection();
+
+            String sql = "UPDATE book_requests SET status = ? WHERE id = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, status);
+            stmt.setInt(2, id);
+
             int rows = stmt.executeUpdate();
 
             success = rows > 0;
