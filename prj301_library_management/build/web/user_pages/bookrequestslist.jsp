@@ -10,10 +10,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Borrow History Page</title>
+        <title>Borrow/Return History Page</title>
     </head>
     <body>
-        <h1>Borrow History</h1>
+        <h1>Borrow/Return History</h1>
         
         <%@include file="/user_pages/dashboard.jsp" %>
         
@@ -26,6 +26,7 @@
                     <th>Title</th>
                     <th>Request Date</th>
                     <th>Status</th>
+                    <th>Request Type</th>
                 </tr>
             </thead>
             
@@ -43,6 +44,7 @@
                     <td><%= bookRequest.getTitle() %></td>
                     <td><%= bookRequest.getRequestDate() %></td>
                     <td><%= bookRequest.getStatus() %></td>
+                    <td><%= bookRequest.getRequestType()%></td>
                 </tr>
                <%       }         
                     }

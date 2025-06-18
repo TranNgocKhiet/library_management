@@ -24,6 +24,62 @@
         <servlet-name>ErrorController</servlet-name>
         <servlet-class>library_management.user_page_controllers.ErrorController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>library_management.controllers.RegisterController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>library_management.controllers.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet1</servlet-name>
+        <servlet-class>library_management.controllers.NewServlet1</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ăda</servlet-name>
+        <servlet-class>library_management.controllers.ăda</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>aeeeeee</servlet-name>
+        <servlet-class>library_management.controllers.aeeeeee</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SignoutController</servlet-name>
+        <servlet-class>library_management.controllers.SignoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditBookController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.EditBookController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchController</servlet-name>
+        <servlet-class>library_management.controllers.SearchController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessRequestController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.ProcessRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageAccountController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.ManageAccountController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OverdueBookViewController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.OverdueBookViewController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatisticsPageController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.StatisticsPageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SystemConfigurationController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.SystemConfigurationController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
@@ -80,13 +136,69 @@
         <servlet-name>AdminController</servlet-name>
         <url-pattern>/AdminController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/RegisterController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet1</servlet-name>
+        <url-pattern>/NewServlet1</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ăda</servlet-name>
+        <url-pattern>/_da</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>aeeeeee</servlet-name>
+        <url-pattern>/aeeeeee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignoutController</servlet-name>
+        <url-pattern>/SignoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditBookController</servlet-name>
+        <url-pattern>/EditBookController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchController</servlet-name>
+        <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessRequestController</servlet-name>
+        <url-pattern>/ProcessRequestController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageAccountController</servlet-name>
+        <url-pattern>/ManageAccountController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OverdueBookViewController</servlet-name>
+        <url-pattern>/OverdueBookViewController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticsPageController</servlet-name>
+        <url-pattern>/StatisticsPageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SystemConfigurationController</servlet-name>
+        <url-pattern>/SystemConfigurationController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>HomeController</welcome-file>
     </welcome-file-list>
     <error-page>
         <error-code>404</error-code>

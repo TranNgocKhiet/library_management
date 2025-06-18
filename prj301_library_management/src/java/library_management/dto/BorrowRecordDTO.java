@@ -17,6 +17,20 @@ public class BorrowRecordDTO {
     private String title;
     private Date borrowDate;
     private Date dueDate;
+
+    public BorrowRecordDTO() {
+    }
+
+    public BorrowRecordDTO(int userId, int bookId, Date borrowDate, Date dueDate, Date returnDate, String status) {
+        this.userId = userId;
+        this.bookId = bookId;
+        this.borrowDate = borrowDate;
+        this.dueDate = dueDate;
+        this.returnDate = returnDate;
+        this.status = status;
+    }
+
+
     private Date returnDate;
     private String status;
 

@@ -76,6 +76,7 @@ public class BorrowListController extends HttpServlet {
                 bookRequest.setBookId(book.getId());
                 bookRequest.setRequestDate(new java.sql.Date(System.currentTimeMillis()));
                 bookRequest.setStatus("pending");
+                bookRequest.setRequestType("borrow");
                 bookRequestDAO.addBookRequest(bookRequest);
             }
             

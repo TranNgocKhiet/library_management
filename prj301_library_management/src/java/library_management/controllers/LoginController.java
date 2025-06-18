@@ -69,7 +69,7 @@ public class LoginController extends HttpServlet{
             if (user != null && !user.getStatus().equals("active")) {
                 request.setAttribute("error", "Account unactive!");
 
-            } else {
+            } else {    
                 request.setAttribute("error", "Username or password is incorrect!");
             }
             request.getRequestDispatcher("login.jsp").forward(request, response);

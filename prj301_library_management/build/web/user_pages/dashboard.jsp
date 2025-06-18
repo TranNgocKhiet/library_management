@@ -60,12 +60,12 @@
         
         <form action="UserController" method="POST">
             <input type="hidden" name="action" value="viewborrowrequests">
-            <input type="submit" value="Borrow Requests">
+            <input type="submit" value="Borrow/Return Requests">
         </form>
         
         <form action="UserController" method="POST">
             <input type="hidden" name="action" value="viewborrowrecords">
-            <input type="submit" value="Borrow History">
+            <input type="submit" value="Borrow/Return History">
         </form>
                 
         <form action="UserController?action=logout" method="POST" class='signout-btn'>                  

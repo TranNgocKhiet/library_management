@@ -15,18 +15,18 @@ import jakarta.servlet.http.HttpServletResponse;
  * @author Slayer
  */
 public class UserController extends HttpServlet {
-        protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String url = "login.jsp"; 
+        String url = "login.jsp";
         String action = request.getParameter("action");
-        
+
         try {
             if (action != null) {
-                action = action.toLowerCase(); 
+                action = action.toLowerCase();
             } else {
-                action = ""; 
+                action = "";
             }
             switch (action) {
                 case "viewuserhomepage":
@@ -43,19 +43,24 @@ public class UserController extends HttpServlet {
                     break;
                 case "viewborrowlist":
                     url = "BorrowListController";
-                    break;    
+                    break;
                 case "removefromborrowlist":
                     url = "BorrowListController";
-                    break;   
+                    break;
                 case "sendbookrequest":
                     url = "BorrowListController";
-                    break;   
+                    break;
                 case "viewborrowrequests":
                     url = "BookRequestsController";
-                    break; 
+                    break;
                 case "viewborrowrecords":
                     url = "BorrowRecordsController";
-                    break; 
+                    break;
+                case "requesttoreturnbook":
+                    url = "BorrowRecordsController";
+                    break;
+                case "logout":
+                    url = "SignoutController";
                 default:
                     break;
             }
