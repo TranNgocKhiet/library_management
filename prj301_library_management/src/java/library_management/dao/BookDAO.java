@@ -19,14 +19,14 @@ import library_management.utils.DBUtils;
 public class BookDAO {
 
     public ArrayList<BookDTO> listBook() throws SQLException, ClassNotFoundException {
-        ArrayList<BookDTO> list = new ArrayList<BookDTO>();
+        ArrayList<BookDTO> list = new ArrayList();
         Connection con = null;
 
         try {
             con = DBUtils.getConnection();
             String sql = "SELECT id, title, author, isbn, category, published_year, total_copies, available_copies,image, status FROM books ORDER BY id ASC";
 
-            BookDTO book = null;
+            BookDTO book;
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 
