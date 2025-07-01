@@ -36,12 +36,6 @@ public class LoginController extends HttpServlet{
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
-                session.setAttribute("id", user.getId());
-                session.setAttribute("name", user.getName());
-                session.setAttribute("email", user.getEmail());
-                session.setAttribute("password", user.getPassword());
-                session.setAttribute("role", user.getRole());
-                session.setAttribute("status", user.getStatus());
 
                 ArrayList<BookDTO> borrowList = new ArrayList<BookDTO>();
 
@@ -52,12 +46,6 @@ public class LoginController extends HttpServlet{
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
-                session.setAttribute("id", user.getId());
-                session.setAttribute("name", user.getName());
-                session.setAttribute("email", user.getEmail());
-                session.setAttribute("password", user.getPassword());
-                session.setAttribute("role", user.getRole());
-                session.setAttribute("status", user.getStatus());
 
                 ArrayList<BookDTO> borrowList = new ArrayList<BookDTO>();
 

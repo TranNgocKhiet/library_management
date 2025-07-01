@@ -5,8 +5,10 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
+<%@page import="jakarta.servlet.http.HttpSession"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="library_management.dto.BookDTO"%>
+<%@page import="library_management.utils.SessionUtils"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -59,7 +61,7 @@
     <body>
         <h1>Home</h1>
         <%
-            String role = (String) session.getAttribute("role");
+            String role = SessionUtils.getLoggedUserRole(session);
             if (role == null) {
                 out.print("Login to use more functions!");
         %>
@@ -105,6 +107,7 @@
                     <form action="UserController" method="POST">
                         <input type="hidden" name="borrowid" value="<%= book.getId()%>">
                         <input type="hidden" name="action" value="savetoborrowlist">
+                        <input type="hidden" name="searchvalue" value="${param.searchvalue}">
                         <input type="submit" value="Save To Shelf">
                     </form>
                         <%}%>

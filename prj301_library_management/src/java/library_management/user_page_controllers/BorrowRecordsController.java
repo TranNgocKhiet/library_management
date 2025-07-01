@@ -23,6 +23,7 @@ import library_management.dao.BookRequestDAO;
 import library_management.dao.BorrowRecordDAO;
 import library_management.dto.BookRequestDTO;
 import library_management.dto.BorrowRecordDTO;
+import library_management.utils.SessionUtils;
 
 /**
  *
@@ -42,52 +43,28 @@ public class BorrowRecordsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        String action = request.getParameter("action");    
-        
+
+        String action = request.getParameter("action");
+
         BookRequestDAO bookRequestDAO = new BookRequestDAO();
         BorrowRecordDAO borrowRecordDAO = new BorrowRecordDAO();
         BorrowRecordDTO borrowRecord = new BorrowRecordDTO();
 
         if (action.equals("viewborrowrecords")) {
             HttpSession session = request.getSession(false);
-            int userId = (int) session.getAttribute("id");
+            Integer userId = SessionUtils.getLoggedUserId(session);
+            if (userId == null) {
+                request.setAttribute("message", "You must be logged in to use this feature.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
             ArrayList<BorrowRecordDTO> borrowRecordsList = new ArrayList<BorrowRecordDTO>();
-            
+
             borrowRecordsList = borrowRecordDAO.getBorrowRecordsByUserId(userId);
             request.setAttribute("borrowrecordslist", borrowRecordsList);
-            
+
             request.getRequestDispatcher("user_pages/borrowrecordslist.jsp").forward(request, response);
-        } else if (action.equals("requesttoreturnbook")) {
-            HttpSession session = request.getSession(false);
-            int userId = (int) session.getAttribute("id");
-            int bookId = (Integer.parseInt(request.getParameter("returnid")));
-            BookRequestDTO returnBook = new BookRequestDTO();
-            
-            borrowRecord = borrowRecordDAO.getBorrowRecord(userId, bookId);
-            
-            borrowRecord.setStatus("pending");
-            borrowRecordDAO.updateReturnStatus(userId, bookId, null , "pending");
-            
-            String title = borrowRecord.getTitle();
-            LocalDate today = LocalDate.now();
-            Date returnDate = Date.valueOf(today);
-            
-            returnBook.setBookId(bookId);
-            returnBook.setTitle(title);
-            returnBook.setRequestDate(returnDate);
-            returnBook.setRequestType("return");
-            returnBook.setStatus("pending");
-            returnBook.setUserId(userId);
-            bookRequestDAO.addBookRequest(returnBook);
-            
-            ArrayList<BorrowRecordDTO> borrowRecordsList = new ArrayList<BorrowRecordDTO>();
-            borrowRecordsList = borrowRecordDAO.getBorrowRecordsByUserId(userId);
-            
-            request.setAttribute("borrowrecordslist", borrowRecordsList);
-            
-            request.getRequestDispatcher("user_pages/borrowrecordslist.jsp").forward(request, response);
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

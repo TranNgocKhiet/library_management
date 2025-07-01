@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import library_management.dao.BookDAO;
 import library_management.dto.BookDTO;
+import library_management.utils.SessionUtils;
 
 /**
  *
@@ -42,7 +43,8 @@ public class HomeController extends HttpServlet {
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("savetoborrowlist")) {
             HttpSession session = request.getSession(false);
-            if (session == null || session.getAttribute("user") == null) {
+            if (session == null || SessionUtils.getLoggedUser(session) == null) {
+                request.setAttribute("message", "You must be logged in to use this feature.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
@@ -67,8 +69,7 @@ public class HomeController extends HttpServlet {
                 borrowList.add(bookDAO.getBookById(borrowId));
             }
 
-            // Sau khi thêm, forward về trang chủ
-            request.getRequestDispatcher("UserController?action=viewuserhomepage").forward(request, response);
+            request.getRequestDispatcher("SearchController?action=homeBookSearch").forward(request, response);
         }
     }
 

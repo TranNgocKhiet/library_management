@@ -6,11 +6,13 @@ package library_management.dao;
 
 import library_management.dto.BookRequestDTO;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import library_management.dto.BookDTO;
 import library_management.utils.DBUtils;
 
 /**
@@ -18,6 +20,50 @@ import library_management.utils.DBUtils;
  * @author Slayer
  */
 public class BookRequestDAO {
+public int insertBorrowedRequest(int userid, ArrayList<BookDTO> list){
+    int totalInserted = 0;
+    Connection cn = null;
+    PreparedStatement st = null;
+    try {
+        cn = DBUtils.getConnection();
+        if (cn != null) {
+            cn.setAutoCommit(false);
+            String sql = "INSERT INTO book_requests (user_id, book_id, request_date, status, request_type) VALUES (?, ?, ?, ?, ?)";
+            st = cn.prepareStatement(sql);
+
+            String day = new Date(System.currentTimeMillis()).toString();
+
+            for (BookDTO book : list) {
+                st.setInt(1, userid);
+                st.setInt(2, book.getId());
+                st.setString(3, day);
+                st.setString(4, "pending");
+                st.setString(5, "borrow");
+                totalInserted += st.executeUpdate();
+            }
+
+            cn.commit();
+            cn.setAutoCommit(true);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        if (cn != null) {
+            try {
+                cn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    } finally {
+        try {
+            if (st != null) st.close();
+            if (cn != null) cn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    return totalInserted;
+}
 
     public ArrayList<BookRequestDTO> getBookRequestsByUserId(int userId) throws SQLException, ClassNotFoundException {
         Connection con = null;

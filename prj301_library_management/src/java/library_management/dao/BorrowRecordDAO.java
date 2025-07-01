@@ -80,6 +80,40 @@ public class BorrowRecordDAO {
         return list;
     }
 
+    public ArrayList<BorrowRecordDTO> getUnreturnedRecords(int userId) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        ArrayList<BorrowRecordDTO> list = new ArrayList<>();
+
+        try {
+            con = DBUtils.getConnection();
+            String sql = "SELECT r.id, user_id, book_id, b.title, borrow_date, due_date, return_date, r.status FROM borrow_records r LEFT JOIN books b ON r.book_id = b.id WHERE user_id = ? AND return_date IS NULL ORDER BY id ASC";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                BorrowRecordDTO record = new BorrowRecordDTO();
+                record.setId(rs.getInt("id"));
+                record.setUserId(rs.getInt("user_id"));
+                record.setBookId(rs.getInt("book_id"));
+                record.setTitle(rs.getString("title"));
+                record.setBorrowDate(rs.getDate("borrow_date"));
+                record.setDueDate(rs.getDate("due_date"));
+                record.setReturnDate(rs.getDate("return_date"));
+                record.setStatus(rs.getString("status"));
+                list.add(record);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+        }
+        return list;
+    }
+
     public BorrowRecordDTO getBorrowRecord(int userId, int bookId) throws SQLException, ClassNotFoundException {
         Connection con = null;
         BorrowRecordDTO borrowRecord = null;

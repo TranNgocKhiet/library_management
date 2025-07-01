@@ -4,7 +4,10 @@
     Author     : Slayer
 --%>
 
+<%@page import="library_management.utils.SessionUtils"%>
+<%@page import="library_management.dto.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="jakarta.servlet.http.HttpSession"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,21 +21,24 @@
     </head>
     <body>
         <h1>Edit Profile</h1>
-        
+
         <%@include file="/user_pages/dashboard.jsp" %>
 
         <br>
-        
-        <%  int userid = (int) session.getAttribute("id");
-            String name = (String) session.getAttribute("name");
-            String email = (String) session.getAttribute("email");
-            String role = (String) session.getAttribute("role");
-            String status = (String) session.getAttribute("status");
+
+        <%   UserDTO user = SessionUtils.getLoggedUser(session);
+            if (user == null) {
+                request.setAttribute("message", "You must be logged in to use this feature.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
+            String name = user.getName();
+            String email = user.getEmail();
+            String role = user.getRole();
+            String status = user.getStatus();
         %>
-        
+
         <form action="EditController" method="POST" class="edit-form">
-            Id: <%=userid%>
-            <br>
             Name: <input type="text" name="name" value="<%=name%>">
             <br>
             Email: <input type="text" name="email" value="<%=email%>">
@@ -44,12 +50,12 @@
             <input type="hidden" name="action" value="confirmedit">
             <input type="submit" value="Confirm Edit">
         </form>
-            
+
         <% String msg = (String) request.getAttribute("msg");
-            if (msg != null) { %>
-            <h3> <%=msg%> </h3>
+            if (msg != null) {%>
+        <h3> <%=msg%> </h3>
         <%
             }
         %>
-</body>
+    </body>
 </html>

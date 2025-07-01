@@ -88,6 +88,7 @@
                         <option value="pending" <%= "pending".equals(bRequest.getStatus()) ? "selected" : ""%>>Pending</option>
                         <option value="rejected" <%= "rejected".equals(bRequest.getStatus()) ? "selected" : ""%>>Rejected</option>
                         <option value="approved" <%= "approved".equals(bRequest.getStatus()) ? "selected" : ""%>>Approved</option>
+                        <option value="approved" <%= "cancel by user".equals(bRequest.getStatus()) ? "selected" : ""%>>Cancel By User</option>
                     </select>
 
                     <%

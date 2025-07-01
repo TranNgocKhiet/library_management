@@ -5,22 +5,18 @@
 package library_management.admin_page_controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import library_management.dao.BookRequestDAO;
 import library_management.dao.BorrowRecordDAO;
 import library_management.dao.FineDAO;
-import library_management.dao.SystemConfigDAO;
+import library_management.dao.HandledRequestDAO;
 import library_management.dto.BookRequestDTO;
 import library_management.dto.BorrowRecordDTO;
-import library_management.dto.FineDTO;
-import library_management.dto.SystemConfigDTO;
+import library_management.dto.HandledRequestDTO;
 
 /**
  *
@@ -43,7 +39,7 @@ public class ProcessRequestController extends HttpServlet {
         try {
             BookRequestDAO rDAO = new BookRequestDAO();
             BorrowRecordDAO bDAO = new BorrowRecordDAO();
-            SystemConfigDAO sDAO = new SystemConfigDAO();
+            
             FineDAO fDAO = new FineDAO();
             String action = request.getParameter("action");
             if (action != null) {
@@ -65,15 +61,12 @@ public class ProcessRequestController extends HttpServlet {
                             request.setAttribute("result", "This request has been successfully rejected!");
                         }
                     } else {
+                        HandledRequestDAO hDAO = new HandledRequestDAO();
                         if ("borrow".equals(requestType)) {
                             if (borrowRecord != null) {
                                 request.setAttribute("error", "This user has already borrowed this book.");
                             } else {
-                                LocalDate borrow = LocalDate.now();
-                                java.sql.Date borrowDate = java.sql.Date.valueOf(borrow);
-                                LocalDate due = borrow.plusDays(Integer.parseInt(sDAO.getConfigValueByKey("default_borrow_duration_days")));
-                                java.sql.Date dueDate = java.sql.Date.valueOf(due);
-                                if (bDAO.addBorrowRecord(new BorrowRecordDTO(userId, bookId, borrowDate, dueDate, null, "borrowed")) && rDAO.setRequestStatusById(id, status)) {
+                                if (hDAO.addHandledRequest(new HandledRequestDTO(id, userId, bookId, requestType, "pending")) && rDAO.setRequestStatusById(id, status)) {
                                     request.setAttribute("result", "Borrow request has been successfully accepted!");
                                 } else {
                                     request.setAttribute("error", "Unknow error");
@@ -83,18 +76,11 @@ public class ProcessRequestController extends HttpServlet {
                             if (borrowRecord == null) {
                                 request.setAttribute("error", "No book borrowing history found. Unable to process book return request!");
                             } else {
-                                long overdueDays = ChronoUnit.DAYS.between(borrowRecord.getDueDate().toLocalDate(), LocalDate.now());
-                                double fine = overdueDays > 0
-                                        ? overdueDays * Double.parseDouble(sDAO.getConfigValueByKey("overdue_fine_per_day")) : 0.0;
-                                String paidStatus = fine == 0.0 ? "paid" : "unpaid";
-                                fDAO.addFine(new FineDTO(borrowRecord.getId(), fine, paidStatus));
-                                String afterHandleStatus = overdueDays > 0 ? "overdue" : "returned";
-                                if (bDAO.updateReturnStatus(userId, bookId, java.sql.Date.valueOf(LocalDate.now()), afterHandleStatus) && rDAO.setRequestStatusById(id, status)) {
+                                 if (hDAO.addHandledRequest(new HandledRequestDTO(id, userId, bookId, requestType, "pending")) && rDAO.setRequestStatusById(id, status)) {
                                     request.setAttribute("result", "Return request has been successfully accepted!");
                                 } else {
-                                    request.setAttribute("error", "Failed to process return.");
+                                    request.setAttribute("error", "Unknow error");
                                 }
-
                             }
                         }
                     }

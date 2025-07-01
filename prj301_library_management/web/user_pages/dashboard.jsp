@@ -36,7 +36,7 @@
             form {
                 margin: 0;
             }
-            
+
             .signout-btn input {
                 background-color: black;
             }
@@ -47,29 +47,33 @@
         <form action="UserController?action=viewuserhomepage" method="POST">                  
             <input type="submit" value="Home">
         </form>
-                
+
         <form action="UserController" method="POST">
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Edit profile">
         </form>
-                        
+
         <form action="UserController" method="POST">
             <input type="hidden" name="action" value="viewborrowlist">
             <input type="submit" value="My Shelf">
         </form>
-        
         <form action="UserController" method="POST">
-            <input type="hidden" name="action" value="viewborrowrequests">
-            <input type="submit" value="Borrow/Return Requests">
+            <input type="hidden" name="action" value="viewreturnpage">
+            <input type="submit" value="Return Borrowed Books">
         </form>
-        
+        <form action="UserController" method="POST">
+            <input type="hidden" name="action" value="viewmyrequests">
+            <input type="submit" value="My Borrow/Return Requests">
+        </form>
+
         <form action="UserController" method="POST">
             <input type="hidden" name="action" value="viewborrowrecords">
-            <input type="submit" value="Borrow/Return History">
+            <input type="submit" value="My Borrow/Return History">
         </form>
-                
+
         <form action="UserController?action=logout" method="POST" class='signout-btn'>                  
             <input type="submit" value="Sign out">
         </form>
+
     </body>
 </html>

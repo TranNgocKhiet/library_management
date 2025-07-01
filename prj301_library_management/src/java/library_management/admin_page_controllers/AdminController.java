@@ -76,7 +76,12 @@ public class AdminController extends HttpServlet {
                 case "deleteconfig":
                     url = "SystemConfigurationController";
                     break;
-                    
+                case "handledrequest":
+                    url = "HandledRequestController";
+                    break;
+                case "finecontrol":
+                    url = "FineController";
+                    break;
                 default:
                     break;
             }

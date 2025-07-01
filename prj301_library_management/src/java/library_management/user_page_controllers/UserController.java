@@ -61,7 +61,12 @@ public class UserController extends HttpServlet {
                     break;
                 case "logout":
                     url = "SignoutController";
-                default:
+                    break;
+                case "viewmyrequests":
+                    url = "MyRequestController";
+                    break;
+                case "viewreturnpage":
+                    url = "ReturnBookPageController";
                     break;
             }
         } catch (Exception e) {

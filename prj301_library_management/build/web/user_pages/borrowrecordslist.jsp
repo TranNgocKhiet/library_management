@@ -1,72 +1,92 @@
-<%-- 
-    Document   : borrowrecords
-    Created on : May 23, 2025, 9:41:48 AM
-    Author     : Slayer
---%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="library_management.dto.BorrowRecordDTO"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Borrow/Return History Page</title>
+        <meta charset="UTF-8">
+        <title>Borrowing History</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ccc;
+                text-align: center;
+            }
+            .overdue-row {
+                background-color: #ffcccc;
+                color: #990000;
+                font-weight: bold;
+            }
+            .warning-banner {
+                background-color: #ff4444;
+                color: white;
+                padding: 15px;
+                margin: 15px 0;
+                font-size: 18px;
+                text-align: center;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            }
+        </style>
     </head>
     <body>
-        <h1>Borrow/Return History</h1>
-        
-        <%@include file="/user_pages/dashboard.jsp" %>
-        
+
+        <h2>Borrowing History</h2>
+
+        <c:set var="hasOverdue" value="false" />
+        <c:forEach var="record" items="${borrowrecordslist}">
+            <c:if test="${record.returnDate == null && record.status == 'overdue'}">
+                <c:set var="hasOverdue" value="true" />
+            </c:if>
+        </c:forEach>
+
+        <c:if test="${hasOverdue}">
+            <div class="warning-banner">
+                ⚠️ You have a book that is overdue,
+                please come to the library to return it immediately
+                to avoid heavy fines!
+            </div>
+        </c:if>
+
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>User ID</th>
-                    <th>Book ID</th>
-                    <th>Title</th>
+                    <th>Book Title</th>
                     <th>Borrow Date</th>
                     <th>Due Date</th>
                     <th>Return Date</th>
                     <th>Status</th>
                 </tr>
             </thead>
-            
             <tbody>
-                            
-                    <%  
-                        ArrayList<BorrowRecordDTO> borrowRecordsList = (ArrayList<BorrowRecordDTO>) request.getAttribute("borrowrecordslist");
-                        if (borrowRecordsList != null) {
-                            for (BorrowRecordDTO record : borrowRecordsList) {
-                                pageContext.setAttribute("record", record);
-                    %>
-                <tr>
-                    <td><%= record.getId() %></td>
-                    <td><%= record.getUserId() %></td>
-                    <td><%= record.getBookId() %></td>
-                    <td><%= record.getTitle() %></td>
-                    <td><%= record.getBorrowDate() %></td>
-                    <td><%= record.getDueDate() %></td>
-                    <td><%= record.getReturnDate() %></td>
-                    <td><%= record.getStatus() %></td>
-                    <% String status = record.getStatus();
-                        if (status.equals("borrowed")) { %>
+                <c:forEach var="record" items="${borrowrecordslist}">
+                    <tr class="<c:if test='${record.returnDate == null && record.status == "overdue"}'>overdue-row</c:if>">
+                        <td>${record.title}</td>
+                        <td><fmt:formatDate value="${record.borrowDate}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${record.dueDate}" pattern="yyyy-MM-dd"/></td>
                         <td>
-                            <form action="UserController" method="POST">
-                                <input type="hidden" name="returnid" value="<%=record.getBookId() %>">
-                                <input type="hidden" name="action" value="requesttoreturnbook">
-                                <input type="submit" value="Return Book">
-                            </form>
+                            <c:choose>
+                                <c:when test="${record.returnDate != null}">
+                                    <fmt:formatDate value="${record.returnDate}" pattern="yyyy-MM-dd"/>
+                                </c:when>
+                                <c:otherwise>
+                                    Not Returned
+                                </c:otherwise>
+                            </c:choose>
                         </td>
-                    <% } %>
-                </tr>
-               <%       }         
-                    }
-                    if (borrowRecordsList == null || borrowRecordsList.isEmpty()) { %>
-                        <tr>
-                            <td colspan="2">No records found.</td>
-                        </tr>
-                <%  } %>
+                        <td>${record.status}</td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
+
     </body>
 </html>

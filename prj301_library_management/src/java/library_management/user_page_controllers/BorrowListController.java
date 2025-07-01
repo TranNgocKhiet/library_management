@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import library_management.dto.BookRequestDTO;
 import library_management.dto.BookDTO;
 import java.time.LocalDate;
 import java.sql.Date;
+import library_management.utils.SessionUtils;
 
 /**
  *
@@ -41,17 +43,22 @@ public class BorrowListController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String action = request.getParameter("action");
         BookRequestDAO bookRequestDAO = new BookRequestDAO();
-        
+        HttpSession session = request.getSession(false);
+        Integer userId = SessionUtils.getLoggedUserId(session);
+        if (userId == null) {
+            request.setAttribute("message", "You must be logged in to use this feature.");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
         if (action.equals("viewborrowlist")) {
             request.getRequestDispatcher("user_pages/borrowlist.jsp").forward(request, response);
         } else if (action.equals("removefromborrowlist")) {
-            HttpSession session = request.getSession(false);
-            int deleteId = Integer.parseInt(request.getParameter("removeid"));
-            ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");  
-            
+            int deleteId = Integer.parseInt(request.getParameter("deleteid"));
+            ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");
+
             BookDTO removeBook = null;
             for (BookDTO book : borrowList) {
                 if (book.getId() == deleteId) {
@@ -65,24 +72,19 @@ public class BorrowListController extends HttpServlet {
             }
             request.getRequestDispatcher("user_pages/borrowlist.jsp").forward(request, response);
         } else if (action.equals("sendbookrequest")) {
-            HttpSession session = request.getSession(false);
-            ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");  
-            
-            for (BookDTO book : borrowList) {
-                BookRequestDTO bookRequest = new BookRequestDTO();
-                int userId = (int) session.getAttribute("id");
-                
-                bookRequest.setUserId(userId);
-                bookRequest.setBookId(book.getId());
-                bookRequest.setRequestDate(new java.sql.Date(System.currentTimeMillis()));
-                bookRequest.setStatus("pending");
-                bookRequest.setRequestType("borrow");
-                bookRequestDAO.addBookRequest(bookRequest);
+
+            ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");
+            int result = bookRequestDAO.insertBorrowedRequest(userId, borrowList);
+            if (result <= 0) {
+                request.setAttribute("error", "Unknown error occurred while sending book request.");
+            } else {
+                request.setAttribute("message", "Book request sent successfully!");
             }
-            
+            session.removeAttribute("borrowlist");
             request.getRequestDispatcher("user_pages/borrowlist.jsp").forward(request, response);
-        } 
+        }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

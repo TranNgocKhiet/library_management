@@ -80,6 +80,22 @@
         <servlet-name>SystemConfigurationController</servlet-name>
         <servlet-class>library_management.admin_page_controllers.SystemConfigurationController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReturnBookPageController</servlet-name>
+        <servlet-class>library_management.user_page_controllers.ReturnBookPageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MyRequestController</servlet-name>
+        <servlet-class>library_management.user_page_controllers.MyRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HandledRequestController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.HandledRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FineController</servlet-name>
+        <servlet-class>library_management.admin_page_controllers.FineController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserController</servlet-name>
         <url-pattern>/UserController</url-pattern>
@@ -191,6 +207,22 @@
     <servlet-mapping>
         <servlet-name>SystemConfigurationController</servlet-name>
         <url-pattern>/SystemConfigurationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReturnBookPageController</servlet-name>
+        <url-pattern>/ReturnBookPageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyRequestController</servlet-name>
+        <url-pattern>/MyRequestController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HandledRequestController</servlet-name>
+        <url-pattern>/HandledRequestController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FineController</servlet-name>
+        <url-pattern>/FineController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

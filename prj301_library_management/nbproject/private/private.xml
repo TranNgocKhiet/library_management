@@ -3,7 +3,36 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/1_fpt/5_su25/6_prj301/library_management/push/library_management/prj301_library_management/src/java/library_management/dao/SystemConfigDAO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/editprofile.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/ReturnBookPage.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/WEB-INF/web.xml</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/admin_page_controllers/AdminController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/admin_page_controllers/ProcessRequestController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/guest_pages/dashboard.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dto/BorrowRecordDTO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dao/BookRequestDAO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/admin_page_controllers/EditBookController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/BorrowListController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/dashboard.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/admin_page_controllers/HandledRequestController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/HomeController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dto/HandledRequestDTO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/BorrowRecordsController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/borrowrecordslist.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/home.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/MyRequestController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/ReturnBookPageController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dao/BookDAO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/admin_pages/dashboard.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/admin_pages/HandledRequest.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dao/BorrowRecordDAO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dto/BookRequestDTO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/utils/SessionUtils.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/user_page_controllers/UserController.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/admin_pages/ProcessRequest.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/src/java/library_management/dao/HandledRequestDAO.java</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/borrowlist.jsp</file>
+            <file>file:/C:/prj/PRJCHUNG/library-management-system/prj301_library_management/web/user_pages/MyRequest.jsp</file>
         </group>
     </open-files>
 </project-private>

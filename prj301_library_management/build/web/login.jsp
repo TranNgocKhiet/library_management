@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,21 +18,27 @@
         </style>
     </head>
     <body>
-        <h1>Login</h1>
-        <form action="./LoginController" method="GET">
-            <input type="text" name="name" value="<%=request.getParameter("name") != null ? request.getParameter("name") : ""%>">
-            <input type="password" name="password" value="<%=request.getParameter("password") != null ? request.getParameter("password") : ""%>">
-            <input type="hidden" name="action" value="login">
-            <input type="submit" value="Log in">
-        </form>
-        
-        <div class="error-mes">
-            <% String error = (String) request.getAttribute("error");
-                if (error != null) { %>
-                <h3> <%=error%> </h3>
-            <%
-                }
-            %>
+    <c:if test="${not empty message}">
+        <div class="alert alert-warning">
+            ${message}
         </div>
-    </body>
+    </c:if>
+
+    <h1>Login</h1>
+    <form action="./LoginController" method="GET">
+        <input type="text" name="name" value="<%=request.getParameter("name") != null ? request.getParameter("name") : ""%>">
+        <input type="password" name="password" value="<%=request.getParameter("password") != null ? request.getParameter("password") : ""%>">
+        <input type="hidden" name="action" value="login">
+        <input type="submit" value="Log in">
+    </form>
+
+    <div class="error-mes">
+        <% String error = (String) request.getAttribute("error");
+                if (error != null) {%>
+        <h3> <%=error%> </h3>
+        <%
+            }
+        %>
+    </div>
+</body>
 </html>

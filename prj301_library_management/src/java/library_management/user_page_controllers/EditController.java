@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import library_management.dao.UserDAO;
 import library_management.dto.UserDTO;
+import library_management.utils.SessionUtils;
 
 /**
  *
@@ -33,7 +34,12 @@ public class EditController extends HttpServlet{
             request.getRequestDispatcher("user_pages/editprofile.jsp").forward(request, response);
         } else if (action.equals("confirmedit")) {
             HttpSession session = request.getSession(false);
-            UserDTO user = (UserDTO) session.getAttribute("usersession");
+             UserDTO user= SessionUtils.getLoggedUser(session);
+            if (user == null) {
+                request.setAttribute("message", "You must be logged in to use this feature.");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                return;
+            }
             String name = request.getParameter("name");
             String email = request.getParameter("email");
 
@@ -43,7 +49,7 @@ public class EditController extends HttpServlet{
 
             request.setAttribute("msg", "Profile update sucessfully!");
             
-            request.getRequestDispatcher("MainController?action=edit").forward(request, response);
+            request.getRequestDispatcher("user_pages/editprofile.jsp").forward(request, response);
         } 
     }
 

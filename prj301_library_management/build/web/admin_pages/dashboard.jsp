@@ -52,6 +52,9 @@
         </form>
         <form action="AdminController?action=processrequest" method="POST">                  
             <input type="submit" value="Process Requests">
+        </form>   
+        <form action="AdminController?action=handledrequest" method="POST">                  
+            <input type="submit" value="CheckIn/Out Book">
         </form>
         <form action="AdminController?action=manageaccount" method="POST">                  
             <input type="submit" value="Manage Account">
@@ -59,10 +62,13 @@
         <form action="AdminController?action=viewbookoverdue" method="POST">                  
             <input type="submit" value="Overdue Book List">
         </form>
+        <form action="AdminController?action=finecontrol" method="POST">                  
+            <input type="submit" value="Manage Fine">
+        </form>
         <form action="AdminController?action=viewstatistics" method="POST">                  
             <input type="submit" value="Statistics Page">
         </form>
-         <form action="AdminController?action=viewlistconfig" method="POST">                  
+        <form action="AdminController?action=viewlistconfig" method="POST">                  
             <input type="submit" value="System Configuration">
         </form>
         <form action="UserController?action=logout" method="POST" class='signout-btn'>                  

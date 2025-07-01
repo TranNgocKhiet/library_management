@@ -206,4 +206,27 @@ public class BookDAO {
         }
         return result;
     }
+
+    public boolean updateAvailableCopies(int bookId, int numberUpdate) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        boolean result = false;
+        try {
+            con = DBUtils.getConnection();
+            String sql = "UPDATE books SET available_copies = available_copies + ? WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, numberUpdate);       
+            ps.setInt(2, bookId);      
+
+            int rowsAffected = ps.executeUpdate();
+            result = (rowsAffected > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+    }
+
 }
