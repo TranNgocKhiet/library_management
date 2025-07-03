@@ -7,9 +7,11 @@ package library_management.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import library_management.dao.BookDAO;
 import library_management.dao.UserDAO;
@@ -38,16 +40,25 @@ public class SearchController extends HttpServlet {
             String action = request.getParameter("action");
             BookDAO bookDAO = new BookDAO();
             ArrayList<BookDTO> bookList = null;
-            String seacrhValue = request.getParameter("searchvalue").toLowerCase();
-            bookList = bookDAO.listBook(seacrhValue);
+            String searchValue = request.getParameter("searchvalue").toLowerCase();
+            bookList = bookDAO.listBook(searchValue);
             request.setAttribute("booklist", bookList);
             if ("editBoookSearch".equals(action)) {
                 request.getRequestDispatcher("/admin_pages/EditBookForm.jsp").forward(request, response);
             } else if ("homeBookSearch".equals(action)) {
+                if (searchValue != null && !searchValue.trim().isEmpty()) {
+                    String encodedSearchValue = URLEncoder.encode(searchValue, "UTF-8");
+                    Cookie searchValueCookie = new Cookie("searchCookie", encodedSearchValue);
+                    searchValueCookie.setMaxAge(2332800);
+                    response.addCookie(searchValueCookie);
+                }
+                if (bookList == null || bookList.isEmpty()) {
+                    request.setAttribute("error", "No Book Found !");
+                }
                 request.getRequestDispatcher("/home.jsp").forward(request, response);
             } else if ("adminAccountSearch".equals(action)) {
                 UserDAO usDAO = new UserDAO();
-                ArrayList<UserDTO> usList = usDAO.getUserByEmail(seacrhValue);
+                ArrayList<UserDTO> usList = usDAO.getUserByEmail(searchValue);
                 request.setAttribute("usList", usList);
                 request.getRequestDispatcher("/admin_pages/ManageAccountController.jsp").forward(request, response);
             }

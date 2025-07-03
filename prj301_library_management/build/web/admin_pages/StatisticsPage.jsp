@@ -15,7 +15,8 @@
     </head>
     <body>
         <h1>Library Statistics</h1>
-
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <h2>General</h2>
         <ul>
             <li>Total number of books: ${totalBooks}</li>

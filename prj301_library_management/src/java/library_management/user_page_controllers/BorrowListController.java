@@ -48,11 +48,6 @@ public class BorrowListController extends HttpServlet {
         BookRequestDAO bookRequestDAO = new BookRequestDAO();
         HttpSession session = request.getSession(false);
         Integer userId = SessionUtils.getLoggedUserId(session);
-        if (userId == null) {
-            request.setAttribute("message", "You must be logged in to use this feature.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            return;
-        }
         if (action.equals("viewborrowlist")) {
             request.getRequestDispatcher("user_pages/borrowlist.jsp").forward(request, response);
         } else if (action.equals("removefromborrowlist")) {

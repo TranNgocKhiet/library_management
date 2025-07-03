@@ -5,12 +5,13 @@
 package library_management.user_page_controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -35,11 +36,16 @@ public class HomeController extends HttpServlet {
         bookList = bookDAO.listBook();
         request.setAttribute("booklist", bookList);
         if (action == null || action.equals("viewuserhomepage")) {
-            request.getRequestDispatcher("/home.jsp").forward(request, response);
-        } else if (action.equals("search")) {
-            String seacrhValue = request.getParameter("searchvalue").toLowerCase();
-            bookList = bookDAO.listBook(seacrhValue);
-            request.setAttribute("booklist", bookList);
+            Cookie[] cookies = request.getCookies();
+            ArrayList<BookDTO> advertiseBookList = null;
+            if(cookies!=null){
+                for(Cookie c : cookies){
+                    if("searchCookie".equals(c.getName())){
+                       advertiseBookList = bookDAO.listBook(URLDecoder.decode(c.getValue(), "UTF-8"));
+                    }
+                }
+            }
+            request.setAttribute("advertise", advertiseBookList);
             request.getRequestDispatcher("/home.jsp").forward(request, response);
         } else if (action.equals("savetoborrowlist")) {
             HttpSession session = request.getSession(false);

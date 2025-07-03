@@ -33,6 +33,8 @@
     </head>
     <body>
         <h2>All Accepted Requests</h2>
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <c:if test="${not empty result}">
             <div class="popup" style="color: green;"><strong>${result}</strong></div>
                 </c:if>

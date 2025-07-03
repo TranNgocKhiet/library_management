@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="library_management.dto.BorrowRecordDTO"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,22 +45,19 @@
     <body>
 
         <h1>Books Not Yet Returned</h1>
-        <%
-            String result = (String) request.getAttribute("result");
-            String error = (String) request.getAttribute("error");
-        %>
+        <jsp:include page="/user_pages/dashboard.jsp" />
+     <div style="margin-top: 30px;"></div>
+        <c:if test="${not empty result}">
+            <div style="padding: 12px; margin: 10px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
+                ${result}
+            </div>
+        </c:if>
 
-        <% if (result != null) {%>
-        <div style="padding: 12px; margin: 10px 0; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;">
-            <%= result%>
-        </div>
-        <% } %>
-
-        <% if (error != null) {%>
-        <div style="padding: 12px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
-            <%= error%>
-        </div>
-        <% } %>
+        <c:if test="${not empty error}">
+            <div style="padding: 12px; margin: 10px 0; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;">
+                ${error}
+            </div>
+        </c:if>
 
         <table>
             <thead>
@@ -75,39 +71,32 @@
                 </tr>
             </thead>
             <tbody>
-                <%
-                    ArrayList<BorrowRecordDTO> list = (ArrayList<BorrowRecordDTO>) request.getAttribute("unreturnlist");
-                    if (list != null && !list.isEmpty()) {
-                        for (BorrowRecordDTO record : list) {
-                            String rowClass = "normal";
-                            if ("overdue".equalsIgnoreCase(record.getStatus())) {
-                                rowClass = "overdue";
-                            }
-                %>
-                <tr class="<%= rowClass%>">
-                    <td><%= record.getId()%></td>
-                    <td><%= record.getTitle()%></td>
-                    <td><%= record.getBorrowDate()%></td>
-                    <td><%= record.getDueDate()%></td>
-                    <td><%= record.getStatus()%></td>
-                    <td>
-                        <form action="ReturnBookPageController" method="POST">
-                            <input type="hidden" name="action" value="sendreturnrequest">
-                            <input type="hidden" name="bookid" value="<%= record.getBookId()%>">
-                            <button type="submit" class="return-btn">Return Book</button>
-                        </form>
-                    </td>
-                </tr>
-                <%
-                    }
-                } else {
-                %>
-                <tr>
-                    <td colspan="6">You have no unreturned books.</td>
-                </tr>
-                <%
-                    }
-                %>
+                <c:choose>
+                    <c:when test="${not empty unreturnlist}">
+                        <c:forEach var="record" items="${unreturnlist}">
+                            <c:set var="rowClass" value="${record.status eq 'overdue' ? 'overdue' : 'normal'}" />
+                            <tr class="${rowClass}">
+                                <td>${record.id}</td>
+                                <td>${record.title}</td>
+                                <td>${record.borrowDate}</td>
+                                <td>${record.dueDate}</td>
+                                <td>${record.status}</td>
+                                <td>
+                                    <form action="ReturnBookPageController" method="POST">
+                                        <input type="hidden" name="action" value="sendreturnrequest" />
+                                        <input type="hidden" name="bookid" value="${record.bookId}" />
+                                        <button type="submit" class="return-btn">Return Book</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6">You have no unreturned books.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
 

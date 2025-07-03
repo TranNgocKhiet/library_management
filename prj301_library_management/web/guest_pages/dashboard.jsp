@@ -43,6 +43,10 @@
         </style>
     </head>
     <body>
+        <form action="HomeController?action=viewuserhomepage" method="POST">                  
+            <input type="submit" value="Home">
+        </form>
+
         <button onclick="window.location.href = 'login.jsp'">Login</button>
         <button onclick="window.location.href = 'register.jsp'">Register</button>
     </body>

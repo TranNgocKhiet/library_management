@@ -15,12 +15,13 @@
         <h1 style="text-align: center; font-size: 32px;margin-bottom: 20px">
             Edit Book
         </h1>
-
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <form action="EditBookController" method="POST">
             <input type="hidden" name="action" value="showAddForm">
             <input type="submit" value="Add new book">
         </form>
-        <br>
+       <div style="margin-top: 30px;"></div>
         <form action="EditBookController" method="POST">
             <input type="hidden" name="action" value="showEditForm">
             <input type="submit" value="Edit book">

@@ -41,6 +41,8 @@
 
         <h2>Borrowing History</h2>
 
+        <jsp:include page="/user_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <c:set var="hasOverdue" value="false" />
         <c:forEach var="record" items="${borrowrecordslist}">
             <c:if test="${record.returnDate == null && record.status == 'overdue'}">

@@ -6,13 +6,15 @@
 
 <%@page import="library_management.dto.BookRequestDTO"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Process Request</title>
-        <style>  .notification {
+        <style>
+            .notification {
                 padding: 10px 20px;
                 border-radius: 5px;
                 margin-bottom: 20px;
@@ -33,77 +35,80 @@
                 background: #d4edda;
                 color: #155724;
                 border: 1px solid #c3e6cb;
-            }</style>
+            }
+        </style>
     </head>
     <body>
         <h1 style="text-align: center; font-size: 32px;margin-bottom: 20px">
             Process Request
         </h1>
-        <%
-            String error = (String) request.getAttribute("error");
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
+        <c:set var="error" value="${requestScope.error}" />
+        <c:if test="${not empty error}">
+            <div class="notification error">
+                ${error}
+            </div>
+        </c:if>
 
-            if (error != null) {
-        %>
-        <div class="notification error">
-            <%= error%>
-        </div>
-        <%
-            }
+        <c:set var="result" value="${requestScope.result}" />
+        <c:if test="${not empty result}">
+            <div class="notification success">
+                ${result}
+            </div>
+        </c:if>
 
-            String result = (String) request.getAttribute("result");
-
-            if (result != null) {
-        %>
-        <div class="notification success">
-            <%= result%>
-        </div>
-        <%
-            }
-        %>
         <div class="book-container">
-            <%
-                ArrayList<BookRequestDTO> rList = (ArrayList<BookRequestDTO>) request.getAttribute("requestlist");
+            <c:set var="rList" value="${requestScope.requestlist}" />
+            <c:choose>
+                <c:when test="${empty rList}">
+                    No Request Found!
+                </c:when>
+                <c:otherwise>
+                    <c:forEach var="bRequest" items="${rList}">
+                        <div class="book-item">
+                            <h4>Id: ${bRequest.id}</h4>
+                            <p>UserId: ${bRequest.userId}</p>
+                            <p>BookId: ${bRequest.bookId}</p>
+                            <p>Request Date: ${bRequest.requestDate}</p>
+                            <p>Request Type : ${bRequest.requestType}</p>
 
-                if (rList == null) {
-                    out.print("No Request Found!");
-                } else {
-                    for (BookRequestDTO bRequest : rList) {
-            %>
-            <div class="book-item">
-                <h4>Id: <%= bRequest.getId()%></h4>
-                <p>UserId: <%= bRequest.getUserId()%></p>
-                <p>BookId: <%= bRequest.getBookId()%></p>
-                <p>Request Date: <%= bRequest.getRequestDate()%></p>
-                <p>Request Type : <%= bRequest.getRequestType()%></p>
+                            <form action="ProcessRequestController" method="POST">
+                                <input type="hidden" name="id" value="${bRequest.id}">
+                                <input type="hidden" name="userId" value="${bRequest.userId}">
+                                <input type="hidden" name="bookId" value="${bRequest.bookId}">
+                                <input type="hidden" name="requestType" value="${bRequest.requestType}">
+                                <input type="hidden" name="action" value="requesthandle">
 
-                <form action="ProcessRequestController" method="POST">
-                    <input type="hidden" name="id" value="<%= bRequest.getId()%>">
-                    <input type="hidden" name="userId" value="<%= bRequest.getUserId()%>">
-                    <input type="hidden" name="bookId" value="<%= bRequest.getBookId()%>">
-                    <input type="hidden" name="requestType" value="<%= bRequest.getRequestType()%>">
-                    <input type="hidden" name="action" value="requesthandle">
-                    <label>Status: </label>
+                                <label>Status: </label>
+                                <select name="status" 
+                                        <c:if test="${bRequest.status ne 'pending'}">disabled</c:if>>
 
-                    <select name="status" <%= !"pending".equals(bRequest.getStatus()) ? "disabled" : ""%>>
-                        <option value="pending" <%= "pending".equals(bRequest.getStatus()) ? "selected" : ""%>>Pending</option>
-                        <option value="rejected" <%= "rejected".equals(bRequest.getStatus()) ? "selected" : ""%>>Rejected</option>
-                        <option value="approved" <%= "approved".equals(bRequest.getStatus()) ? "selected" : ""%>>Approved</option>
-                        <option value="approved" <%= "cancel by user".equals(bRequest.getStatus()) ? "selected" : ""%>>Cancel By User</option>
-                    </select>
+                                            <option value="pending" 
+                                            <c:if test="${bRequest.status eq 'pending'}">selected</c:if>>
+                                                Pending
+                                            </option>
+                                            <option value="rejected" 
+                                            <c:if test="${bRequest.status eq 'rejected'}">selected</c:if>>
+                                                Rejected
+                                            </option>
+                                            <option value="approved" 
+                                            <c:if test="${bRequest.status eq 'approved'}">selected</c:if>>
+                                                Approved
+                                            </option>
+                                        <c:if test="${bRequest.status eq 'cancel by user'}">
+                                            <option value="cancelbyuser" selected>Cancel By User</option>
+                                        </c:if>
+                                </select>
 
-                    <%
-                        if ("pending".equals(bRequest.getStatus())) {
-                    %>
-                    <input type="submit" value="Submit">
-                    <%
-                        }
-                    %>
-                </form>
-            </div><!-- book-item -->
-            <%
-                    }
-                }
-            %>
+                                <c:if test="${bRequest.status eq 'pending'}">
+                                    <input type="submit" value="Submit">
+                                </c:if>
+                            </form>
+                        </div><!-- book-item -->
+                    </c:forEach>
+                </c:otherwise>
+            </c:choose>
         </div><!-- book-container -->
 
     </body>

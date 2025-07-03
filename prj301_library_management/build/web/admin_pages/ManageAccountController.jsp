@@ -7,6 +7,7 @@
 <%@page import="library_management.dto.UserDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -42,71 +43,55 @@
         <h1 style="text-align: center; font-size: 32px;margin-bottom: 20px">
             Manage Account
         </h1>
-        <br>
-           <form action="SearchController" name='search' method="POST" class="search-bar">
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
+        <form action="SearchController" name='search' method="POST" class="search-bar">
             <input type="hidden" name="action" value="adminAccountSearch">
             <input type="text" name="searchvalue" value="${param.searchvalue}">
             <input type="submit" value="Search">
         </form>
-            <br>
-        <%
-            String error = (String) request.getAttribute("error");
-
-            if (error != null) {
-        %>
-        <div class="notification error">
-            <%= error%>
-        </div>
-        <%
-            }
-
-            String result = (String) request.getAttribute("result");
-
-            if (result != null) {
-        %>
-        <div class="notification success">
-            <%= result%>
-        </div>
-        <%
-            }
-        %>
+        <br>
+        <c:set var = "error" value="${requestScope.error}" />
+        <c:if test="${not empty error}">
+            <div class="notification error">
+                ${error}
+            </div>
+        </c:if>
+        <c:set var = "result" value="${requestScope.result}" />
+        <c:if test="${not empty result}">
+            <div class="notification success">
+                ${result}
+            </div>
+        </c:if>
         <div class="book-container">
-            <%
-                ArrayList<UserDTO> usList = (ArrayList<UserDTO>) request.getAttribute("usList");
+            <c:set var="usList" value="${requestScope.usList}"/>
+            <c:choose>
+                <c:when test="${not empty usList}">
+                    <c:forEach var="us" items="${usList}">
+                        <div class="book-item">
+                            <h4>Id: ${us.id}</h4>
+                            <p>Name: ${us.name}</p>
+                            <p>Email: ${us.email}</p>
+                            <p>Role: ${us.role}</p>
+                            <form action="ManageAccountController" method="POST">
+                                <input type="hidden" name="id" value="${us.id}">
+                                <input type="hidden" name="action" value="statushandle">
+                                <input type="hidden" name="status" value="${us.status}">
+                                <label>Status: </label>
+                                <select name="statusinput" <c:if test="${'admin' == us.role}">disabled</c:if>>
+                                    <option value="active" <c:if test="${'active' == us.status}">selected</c:if>>Active</option>
+                                    <option value="blocked" <c:if test="${'blocked' == us.status}">selected</c:if>>Blocked</option>
+                                    </select>
+                                <c:if test="${'admin' != us.role}"> <input type="submit" value="Submit"></c:if>
+                                </form>
+                            </div><!-- book-item -->
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    ${"No User Found!"}
+                </c:otherwise>
+            </c:choose>
 
-                if (usList == null || usList.isEmpty()) {
-                    out.print("No User Found!");
-                } else {
-                    for (UserDTO us : usList) {
-            %>
-            <div class="book-item">
-                <h4>Id: <%= us.getId()%></h4>
-                <p>Name: <%= us.getName()%></p>
-                <p>Email: <%= us.getEmail()%></p>
-                <p>Role: <%= us.getRole()%></p>
-                <form action="ManageAccountController" method="POST">
-                    <input type="hidden" name="id" value="<%= us.getId()%>">
-                    <input type="hidden" name="action" value="statushandle">
-                    <input type="hidden" name="status" value="<%= us.getStatus()%>">
-                    <label>Status: </label>
-                    <select name="statusinput" <%= "admin".equals(us.getRole()) ? "disabled" : ""%>>
-                        <option value="active" <%= "active".equals(us.getStatus()) ? "selected" : ""%>>active</option>
-                        <option value="blocked" <%= "blocked".equals(us.getStatus()) ? "selected" : ""%>>blocked</option>
-                    </select>
-
-                    <%
-                        if (!"admin".equals(us.getRole())) {
-                    %>
-                    <input type="submit" value="Submit">
-                    <%
-                        }
-                    %>
-                </form>
-            </div><!-- book-item -->
-            <%
-                    }
-                }
-            %>
         </div><!-- book-container -->
 
     </body>

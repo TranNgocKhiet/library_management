@@ -44,7 +44,7 @@
     </head>
 
     <body>
-        <form action="AdminController?action=viewadminrhomepage" method="POST">                  
+        <form action="AdminController?action=viewadminhomepage" method="POST">                  
             <input type="submit" value="Home">
         </form>
         <form action="AdminController?action=editBook" method="POST">                  

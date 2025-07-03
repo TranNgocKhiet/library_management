@@ -7,6 +7,7 @@
 <%@page import="library_management.dto.BorrowRecordDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -40,51 +41,41 @@
         <h1 style="text-align: center; font-size: 32px;margin-bottom: 20px">
             Overdue Book List
         </h1>
-        <br>
-        <br>
-        <%
-            String error = (String) request.getAttribute("error");
-
-            if (error != null) {
-        %>
-        <div class="notification error">
-            <%= error%>
-        </div>
-        <%
-            }
-
-            String result = (String) request.getAttribute("result");
-
-            if (result != null) {
-        %>
-        <div class="notification success">
-            <%= result%>
-        </div>
-        <%
-            }
-        %>
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
+        <c:set var="error" value="${requestScope.error}"/>
+        <c:if test="${not empty error}">
+            <div class="notification error">
+                ${error}
+            </div>
+        </c:if>
+        <c:set var="result" value="${requestScope.result}"/>
+        <c:if test="${not empty result}">
+            <div class="notification success">
+                ${result}
+            </div>
+        </c:if>
         <div class="book-container">
-            <%
-                ArrayList<BorrowRecordDTO> bList = (ArrayList<BorrowRecordDTO>) request.getAttribute("overdueBookList");
+            <c:set var="bList" value="${requestScope.overdueBookList}"/>
+            <c:choose>
+                <c:when test="${not empty bList}">
+                    <c:forEach var="record" items="${bList}">
+                        <div class="book-item">
+                            <h4>Id: ${record.id}</h4>
+                            <p>User Id: ${record.userId}</p>
+                            <p>Book Id: ${record.bookId}</p>
+                            <p>Borrow Date: ${record.borrowDate}</p>
+                            <p>Due Date: ${record.dueDate}</p>
+                            <p>Return Date: ${record.returnDate}</p>
+                            <p>Status: ${record.status}</p>
+                        </div><!-- book-item -->
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    ${"No Overdue Book Found!"}
+                </c:otherwise>
+            </c:choose>
 
-                if (bList == null || bList.isEmpty()) {
-                    out.print("No Overdue Book Found!");
-                } else {
-                    for (BorrowRecordDTO record : bList) {
-            %>
-            <div class="book-item">
-                <h4>Id: <%= record.getId()%></h4>
-                <p>User Id: <%= record.getUserId()%></p>
-                <p>Book Id: <%= record.getBookId()%></p>
-                <p>Borrow Date: <%= record.getBorrowDate()%></p>
-                <p>Due Date: <%= record.getDueDate()%></p>
-                <p>Return Date: <%= record.getReturnDate()%></p>
-                <p>Status: <%= record.getStatus()%></p>
-            </div><!-- book-item -->
-            <%
-                    }
-                }
-            %>
         </div><!-- book-container -->
 
     </body>

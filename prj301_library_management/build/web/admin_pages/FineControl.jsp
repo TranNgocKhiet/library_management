@@ -30,7 +30,8 @@
     <body>
         <h2 style="text-align:center;">Fine Control Page</h2>
 
-
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <c:if test="${not empty result}">
             <script>
                 alert("${result}");

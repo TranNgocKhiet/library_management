@@ -3,15 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package library_management.controllers;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import library_management.dto.BookDTO;
 import library_management.dao.UserDAO;
@@ -21,18 +24,30 @@ import library_management.dto.UserDTO;
  *
  * @author Slayer
  */
-public class LoginController extends HttpServlet{
+public class LoginController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
         String name = request.getParameter("name");
-        
+
         String password = request.getParameter("password");
         UserDAO dao = new UserDAO();
         UserDTO user = dao.login(name, password);
-        
-        if (user != null && user.getStatus().equals("active")){  
+
+        if (user != null && user.getStatus().equals("active")) {
             if (user.getRole().equals("admin")) {
+                if ("on".equals(request.getParameter("remember"))) {
+                    String encodedUsername = URLEncoder.encode(name != null ? name : "", "UTF-8");
+                    String encodedPassword = URLEncoder.encode(password != null ? password : "", "UTF-8");
+
+                    Cookie usernameCookie = new Cookie("username", encodedUsername);
+                    Cookie passwordCookie = new Cookie("password", encodedPassword);
+                    usernameCookie.setMaxAge(2332800);
+                    passwordCookie.setMaxAge(2332800);
+                    response.addCookie(usernameCookie);
+                    response.addCookie(passwordCookie);
+                }
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
@@ -42,7 +57,18 @@ public class LoginController extends HttpServlet{
                 session.setAttribute("borrowlist", borrowList);
 
                 request.getRequestDispatcher("AdminController?action=viewadminhomepage").forward(request, response);
-            } else if (user.getRole().equals("user")){
+            } else if (user.getRole().equals("user")) {
+                if ("on".equals(request.getParameter("remember"))) {
+                    String encodedUsername = URLEncoder.encode(name != null ? name : "", "UTF-8");
+                    String encodedPassword = URLEncoder.encode(password != null ? password : "", "UTF-8");
+
+                    Cookie usernameCookie = new Cookie("username", encodedUsername);
+                    Cookie passwordCookie = new Cookie("password", encodedPassword);
+                    usernameCookie.setMaxAge(2332800);
+                    passwordCookie.setMaxAge(2332800);
+                    response.addCookie(usernameCookie);
+                    response.addCookie(passwordCookie);
+                }
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute("user", user);
@@ -57,7 +83,7 @@ public class LoginController extends HttpServlet{
             if (user != null && !user.getStatus().equals("active")) {
                 request.setAttribute("error", "Account unactive!");
 
-            } else {    
+            } else {
                 request.setAttribute("error", "Username or password is incorrect!");
             }
             request.getRequestDispatcher("login.jsp").forward(request, response);

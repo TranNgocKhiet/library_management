@@ -39,12 +39,6 @@ public class MyRequestController extends HttpServlet {
             String action = request.getParameter("action");
             HttpSession session = request.getSession(false);
             Integer userId = SessionUtils.getLoggedUserId(session);
-            if (userId == null) {
-                request.setAttribute("message", "You must be logged in to use this feature.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }
-            
             if ("viewmyrequests".equals(action)) {
                 ArrayList<BookRequestDTO> rlist = rDao.getBookRequestsByUserId(userId);
             request.setAttribute("myrequests", rlist);

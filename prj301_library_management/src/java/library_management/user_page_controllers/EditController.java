@@ -35,11 +35,6 @@ public class EditController extends HttpServlet{
         } else if (action.equals("confirmedit")) {
             HttpSession session = request.getSession(false);
              UserDTO user= SessionUtils.getLoggedUser(session);
-            if (user == null) {
-                request.setAttribute("message", "You must be logged in to use this feature.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }
             String name = request.getParameter("name");
             String email = request.getParameter("email");
 

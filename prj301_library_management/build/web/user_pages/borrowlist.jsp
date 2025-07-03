@@ -1,13 +1,5 @@
-<%-- 
-    Document   : borrowlist.jsp
-    Created on : May 22, 2025, 8:12:45 PM
-    Author     : Slayer
---%>
-
-<%@page import="java.util.ArrayList"%>
-<%@page import="library_management.dto.BookDTO"%>
-<%@page import="jakarta.servlet.http.HttpSession"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,19 +48,18 @@
 <body>
     <h1>My Shelf</h1>
 
-    <%@include file="/user_pages/dashboard.jsp" %>
+    <jsp:include page="/user_pages/dashboard.jsp" />
 
-    <% String message = (String) request.getAttribute("message"); %>
-    <% if (message != null) { %>
+    <c:if test="${not empty message}">
         <div class="message-box">
-            <%= message %><br>Redirecting to Home in 5 seconds...
+            ${message}<br>Redirecting to Home in 5 seconds...
         </div>
         <script>
             setTimeout(function () {
                 window.location.href = "HomeController";
             }, 5000);
         </script>
-    <% } %>
+    </c:if>
 
     <table>
         <thead>
@@ -86,39 +77,35 @@
             </tr>
         </thead>
         <tbody>
-            <%
-                ArrayList<BookDTO> borrowList = (ArrayList<BookDTO>) session.getAttribute("borrowlist");
-                if (borrowList != null) {
-                    for (BookDTO book : borrowList) {
-            %>
-            <tr>
-                <td><%= book.getId() %></td>
-                <td><%= book.getTitle() %></td>
-                <td><%= book.getAuthor() %></td>
-                <td><%= book.getIsbn() %></td>
-                <td><%= book.getCategory() %></td>
-                <td><%= book.getPublishedYear() %></td>
-                <td><%= book.getTotalCopies() %></td>
-                <td><%= book.getAvailableCopies() %></td>
-                <td><%= book.getStatus() %></td>
-                <td>
-                    <form action="UserController" method="POST">
-                        <input type="hidden" name="deleteid" value="<%= book.getId() %>">
-                        <input type="hidden" name="action" value="removefromborrowlist">
-                        <input type="submit" value="Remove From Shelf" class="btn-submit">
-                    </form>
-                </td>
-            </tr>
-            <%
-                    }
-                }
-
-                if (borrowList == null || borrowList.isEmpty()) {
-            %>
-            <tr>
-                <td colspan="10">No books found.</td>
-            </tr>
-            <% } %>
+            <c:choose>
+                <c:when test="${not empty sessionScope.borrowlist}">
+                    <c:forEach var="book" items="${sessionScope.borrowlist}">
+                        <tr>
+                            <td>${book.id}</td>
+                            <td>${book.title}</td>
+                            <td>${book.author}</td>
+                            <td>${book.isbn}</td>
+                            <td>${book.category}</td>
+                            <td>${book.publishedYear}</td>
+                            <td>${book.totalCopies}</td>
+                            <td>${book.availableCopies}</td>
+                            <td>${book.status}</td>
+                            <td>
+                                <form action="UserController" method="POST">
+                                    <input type="hidden" name="deleteid" value="${book.id}" />
+                                    <input type="hidden" name="action" value="removefromborrowlist" />
+                                    <input type="submit" value="Remove From Shelf" class="btn-submit" />
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="10">No books found.</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
         </tbody>
     </table>
 

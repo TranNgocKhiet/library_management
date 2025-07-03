@@ -53,11 +53,6 @@ public class BorrowRecordsController extends HttpServlet {
         if (action.equals("viewborrowrecords")) {
             HttpSession session = request.getSession(false);
             Integer userId = SessionUtils.getLoggedUserId(session);
-            if (userId == null) {
-                request.setAttribute("message", "You must be logged in to use this feature.");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }
             ArrayList<BorrowRecordDTO> borrowRecordsList = new ArrayList<BorrowRecordDTO>();
 
             borrowRecordsList = borrowRecordDAO.getBorrowRecordsByUserId(userId);

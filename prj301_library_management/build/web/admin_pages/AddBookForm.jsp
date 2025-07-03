@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +16,9 @@
         <h1 style="text-align: center; font-size: 32px;margin-bottom: 20px">
             ENTER NEW BOOK INFORMATION
         </h1>
+
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <form action="EditBookController" method="POST">
             <input type="hidden" name="action" value="addBookSubmit">
             Title(*) : <input type="text" name="title" value="${param.title}"><br>
@@ -27,24 +31,17 @@
             Image(if have): <input type="text" name="image" value="${param.image}"><br>
             <input type="submit" value="Add Book">
         </form>
-        <%
-            String error = (String) request.getAttribute("error");
 
-            if (error != null) {
-        %>
-        <p style="color:red;"><%= error%></p>
-        <%
-            }
-
-            String result = (String) request.getAttribute("result");
-
-            if (result != null) {
-        %>
-        <p style="color:green;"><%= result%></p>
-        <%
-            }
-        %>
-
+        <c:set var= "error" value = "${requestScope.error}" />
+        <c:set var = "result" value="${requestScope.result}"/>
+        <c:choose>
+            <c:when test="${not empty error}">
+                <p style="color:red;">${error}</p>
+            </c:when>
+            <c:when test="${not empty result}">
+                <p style="color:green;">${result}</p>
+            </c:when>
+        </c:choose>
 
     </body>
 </html>

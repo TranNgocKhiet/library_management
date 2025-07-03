@@ -1,6 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="library_management.dto.BookDTO"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -85,75 +85,69 @@
             Edit Book
         </h1>
 
-        <br>
+        <jsp:include page="/admin_pages/dashboard.jsp" />
+        <div style="margin-top: 30px;"></div>
         <form action="SearchController" name='search' method='POST' class="search-bar">
             <input type="text" name="searchvalue" value="${param.searchvalue}">
             <input type="hidden"  name="action" value="editBoookSearch">
             <input type="submit" value="Search">
         </form>
-        <%
-            String error = (String) request.getAttribute("error");
-
-            if (error != null) {
-        %>
-        <div class="notification error">
-            <%= error%>
-        </div>
-        <%
-            }
-
-            String result = (String) request.getAttribute("result");
-
-            if (result != null) {
-        %>
-        <div class="notification success">
-            <%= result%>
-        </div>
-        <%
-            }
-        %>
-        <div class="book-container">
-            <%
-                ArrayList<BookDTO> bookList = (ArrayList<BookDTO>) request.getAttribute("booklist");
-                if (bookList == null) {
-                    out.print("No Book Found !");
-                } else {
-                    for (BookDTO book : bookList) {
-            %>
-            <div class="book-card">
-                <img src='images/<%= book.getImage()%>' alt='Book Image' /><br>
-                <h4><%= book.getTitle()%></h4>
-                <button class='show-button' onclick='toggleDetails(<%= book.getId()%>)'>Edit</button>
-
-                <div id='details-<%= book.getId()%>' class='details'>
-                    <p><strong>Tác giả:</strong> <%= book.getAuthor()%></p>
-                    <p><strong>ISBN:</strong> <%= book.getIsbn()%></p>
-
-                    <form action='EditBookController' method='POST'>
-                        <input type='hidden' name='id' value='<%= book.getId()%>'>
-                        <input type='hidden' name='action' value='editBookSubmit'>
-                        Category: <input type='text' name='category' value='<%= book.getCategory()%>'><br>
-                        Published Year: <input type='number' name='published_year' value='<%= book.getPublishedYear()%>'><br>
-                        Total Copies: <input type='number' name='total_copies' value='<%= book.getTotalCopies()%>'><br>
-                        Available Copies: <input type='number' name='available_copies' value='<%= book.getAvailableCopies()%>'><br>
-                        Image (if have): <input type='text' name='image' value='<%= book.getImage()%>'><br>
-                        Status:
-                        Status:
-                        <select name='status'>
-                            <option value='active' <%= "active".equals(book.getStatus()) ? "selected" : ""%>>Active</option>
-                            <option value='deleted' <%= "deleted".equals(book.getStatus()) ? "selected" : ""%>>Soft Remove</option>
-                        </select><br>
-                        <input type='submit' value='Save'>
-                    </form>
-
-
-
-                </div>
+        <c:set var = "error" value="${requestScope.error}" />
+        <c:if test="${not empty error}">
+            <div class="notification error">
+                ${error}
             </div>
-            <%
-                    }
-                }
-            %>
+        </c:if>
+        <c:set var = "result" value="${requestScope.result}" />
+        <c:if test="${not empty result}">
+            <div class="notification success">
+                ${result}
+            </div>
+        </c:if>
+
+        <div class="book-container">
+            <c:set var="bookList" value="${requestScope.booklist}"/>
+            <c:choose>
+                <c:when test="${not empty bookList}">
+                    <c:forEach var = "book" items="${bookList}">
+                        <div class="book-card">
+                            <img src='images/${book.image}' alt='Book Image' /><br>
+                            <h4>${book.title}</h4>
+                            <button class='show-button' onclick='toggleDetails(${book.id})'>Edit</button>
+
+                            <div id='details-${book.id}' class='details'>
+                                <p><strong>Author:</strong> ${book.author}</p>
+                                <p><strong>ISBN:</strong> ${book.isbn}</p>
+
+                                <form action='EditBookController' method='POST'>
+                                    <input type='hidden' name='id' value='${book.id}'>
+                                    <input type='hidden' name='action' value='editBookSubmit'>
+                                    Category: <input type='text' name='category' value='${book.category}'><br>
+                                    Published Year: <input type='number' name='published_year' value='${book.publishedYear}'><br>
+                                    Total Copies: <input type='number' name='total_copies' value='${book.totalCopies}'><br>
+                                    Available Copies: <input type='number' name='available_copies' value='${book.availableCopies}'><br>
+                                    Image (if have): <input type='text' name='image' value='${book.image}'><br>
+                                    Status:
+                                    Status:
+                                    <select name="status">
+                                        <option value="active" <c:if test="${book.status == 'active'}">selected</c:if>>Active</option>
+                                        <option value="deleted" <c:if test="${book.status == 'deleted'}">selected</c:if>>Soft Remove</option>
+                                        </select>
+                                        <br>
+                                        <input type='submit' value='Save'>
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    ${"No Book Found !"}
+                </c:otherwise>
+            </c:choose>
+
         </div><!-- book-container -->
     </body>
 </html>
