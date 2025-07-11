@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import library_management.dto.BookDTO;
 import library_management.dao.UserDAO;
 import library_management.dto.UserDTO;
+import library_management.utils.HashUtil;
 
 /**
  *
@@ -26,20 +27,27 @@ import library_management.dto.UserDTO;
  */
 public class LoginController extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, SQLException {
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        String name = request.getParameter("name");
 
-        String password = request.getParameter("password");
+        String name = request.getParameter("name");
+        String rawPassword = request.getParameter("password");
+
+        String hashedPassword = HashUtil.sha256(rawPassword);
+
         UserDAO dao = new UserDAO();
-        UserDTO user = dao.login(name, password);
+        UserDTO user = dao.login(name, hashedPassword);
+
+        if (user == null) {
+            user = dao.login(name, rawPassword);
+        }
 
         if (user != null && user.getStatus().equals("active")) {
             if (user.getRole().equals("admin")) {
                 if ("on".equals(request.getParameter("remember"))) {
                     String encodedUsername = URLEncoder.encode(name != null ? name : "", "UTF-8");
-                    String encodedPassword = URLEncoder.encode(password != null ? password : "", "UTF-8");
+                    String encodedPassword = URLEncoder.encode(rawPassword != null ? rawPassword : "", "UTF-8");
 
                     Cookie usernameCookie = new Cookie("username", encodedUsername);
                     Cookie passwordCookie = new Cookie("password", encodedPassword);
@@ -60,7 +68,7 @@ public class LoginController extends HttpServlet {
             } else if (user.getRole().equals("user")) {
                 if ("on".equals(request.getParameter("remember"))) {
                     String encodedUsername = URLEncoder.encode(name != null ? name : "", "UTF-8");
-                    String encodedPassword = URLEncoder.encode(password != null ? password : "", "UTF-8");
+                    String encodedPassword = URLEncoder.encode(rawPassword != null ? rawPassword : "", "UTF-8");
 
                     Cookie usernameCookie = new Cookie("username", encodedUsername);
                     Cookie passwordCookie = new Cookie("password", encodedPassword);

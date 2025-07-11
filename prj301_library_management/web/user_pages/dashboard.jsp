@@ -9,36 +9,46 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Menu</title>
+        <title>Dashboard</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f5f7fa;
+                padding: 20px;
+                margin: 0;
+                text-align: center;
             }
+
             body > form {
                 display: inline-block;
-                margin-right: 15px;
-                vertical-align: middle;
+                margin: 10px;
             }
 
             input[type="submit"] {
-                background-color: grey;
+                background: linear-gradient(to right, #4e54c8, #8f94fb);
                 color: white;
                 border: none;
-                padding: 8px 12px;
-                border-radius: 4px;
+                padding: 10px 18px;
+                border-radius: 8px;
                 cursor: pointer;
-                font-weight: bold;
-                transition: background-color 0.3s ease;
+                font-weight: 600;
+                font-size: 15px;
+                transition: transform 0.2s, background-color 0.3s;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
+
             input[type="submit"]:hover {
-                background-color: #218838;
-            }
-            form {
-                margin: 0;
+                background-color: #5cb85c; /* xanh lá hover */
+                transform: scale(1.05);
             }
 
             .signout-btn input {
-                background-color: black;
+                background: #333;
+                color: #fff;
+            }
+
+            .signout-btn input:hover {
+                background-color: #000;
             }
         </style>
     </head>

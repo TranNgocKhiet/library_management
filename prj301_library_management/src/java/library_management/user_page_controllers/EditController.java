@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import library_management.dao.UserDAO;
 import library_management.dto.UserDTO;
 import library_management.utils.SessionUtils;
+import library_management.utils.HashUtil; // ✅ Import để hash mật khẩu
 
 /**
  *
@@ -34,16 +35,29 @@ public class EditController extends HttpServlet{
             request.getRequestDispatcher("user_pages/editprofile.jsp").forward(request, response);
         } else if (action.equals("confirmedit")) {
             HttpSession session = request.getSession(false);
-             UserDTO user= SessionUtils.getLoggedUser(session);
+            UserDTO user= SessionUtils.getLoggedUser(session);
             String name = request.getParameter("name");
             String email = request.getParameter("email");
+            String password = request.getParameter("password"); 
+            String confirmPassword = request.getParameter("confirmPassword"); 
 
             user.setName(name);
             user.setEmail(email);
+
+            if (password != null && !password.isEmpty()) {
+                if (password.equals(confirmPassword)) {
+                    String hashedPassword = HashUtil.sha256(password);
+                    user.setPassword(hashedPassword);
+                } else {
+                    request.setAttribute("msg", "Password not match");
+                    request.getRequestDispatcher("user_pages/editprofile.jsp").forward(request, response);
+                    return;
+                }
+            }
+
             userDAO.edit(user);
 
-            request.setAttribute("msg", "Profile update sucessfully!");
-            
+            request.setAttribute("msg", "Update successfully");
             request.getRequestDispatcher("user_pages/editprofile.jsp").forward(request, response);
         } 
     }
@@ -100,4 +114,3 @@ public class EditController extends HttpServlet{
     }// </editor-fold>
 
 }
-

@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import library_management.dao.UserDAO;
+import library_management.utils.HashUtil;
 
 /**
  *
@@ -33,13 +34,16 @@ public class RegisterController extends HttpServlet {
             String name = request.getParameter("name");
             String password = request.getParameter("password");
             String email = request.getParameter("email");
+
+            String hashedPassword = HashUtil.sha256(password); 
+
             UserDAO dao = new UserDAO();
-            if(dao.isUserExists(name, email)){
+            if (dao.isUserExists(name, email)) {
                 request.setAttribute("error", "Account name or email already exists!");
-            }else{
-                if(dao.register(name, password, email)){
+            } else {
+                if (dao.register(name, hashedPassword, email)) {
                     request.setAttribute("result", "Registration successful!");
-                }else{
+                } else {
                     request.setAttribute("error", "Unknown error. Registration failed!");
                 }
             }
