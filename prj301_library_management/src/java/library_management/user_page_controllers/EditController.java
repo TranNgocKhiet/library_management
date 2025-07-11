@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import library_management.dao.UserDAO;
 import library_management.dto.UserDTO;
 import library_management.utils.SessionUtils;
-import library_management.utils.HashUtil; // ✅ Import để hash mật khẩu
+import library_management.utils.HashUtil; 
 
 /**
  *
